@@ -28,16 +28,18 @@ D_VALUE = DstColCfg.Factory.factory(label=S_VALUE.label, value=S_VALUE)
 D_BONUS = DstColCfg.Factory.factory(label=S_BONUS.label, value=S_BONUS)
 D_SUM = DstColCfg.Factory.factory(label='Сумма', value=lambda x: x[S_VALUE] + x[S_BONUS])
 
-category_gain = ['Процентный доход', 'Бонусы']
+category_gain = ['Процентный доход', 'Бонусы', 'Проценты']
 category_trans = ['Переводы']
 category_t_g = category_trans + category_gain
 D_CATEGORY_GAIN = DstColCfg.Factory.factory(label=S_CATEGORY.label, value=S_CATEGORY, filter=lambda x: x in category_gain)
 D_CATEGORY_TRANS = DstColCfg.Factory.factory(label=S_CATEGORY.label, value=S_CATEGORY, visible=False, filter=lambda x: x in category_trans)
 D_CATEGORY = DstColCfg.Factory.factory(label=S_CATEGORY.label, value=S_CATEGORY, filter=lambda x: x not in category_t_g)
 D_DESC = DstColCfg.Factory.factory(label=S_DESC.label, value=S_DESC)
+D_BANK = DstColCfg.Factory.factory(label='Банк', value=lambda x: 'Тинькофф')
+
 
 report_cfgs: List[DstCfg] = [
-    DstCfg('loss', [D_DATE, D_VALUE, D_BONUS, D_SUM, D_CATEGORY]),
+    DstCfg('loss', [D_DATE, D_SUM, D_VALUE, D_BONUS, D_CATEGORY, D_DESC, D_BANK]),
     DstCfg('transfer', [D_DATE, D_VALUE, D_BONUS, D_SUM, D_CATEGORY_TRANS]),
     DstCfg('gain', [D_DATE, D_VALUE, D_BONUS, D_SUM, D_CATEGORY_GAIN]),
 ]
