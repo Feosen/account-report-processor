@@ -1,9 +1,9 @@
 import csv
+import locale
 import logging
 from dataclasses import dataclass
-from typing import List, Any, Dict, Callable, Type, Union, TextIO
-
 from decimal import Decimal
+from typing import List, Any, Dict, Callable, Type, Union, TextIO
 
 _logger = logging.getLogger(__name__)
 
@@ -31,8 +31,8 @@ class SrcColCfg(BaseCfg):
         return self.id
 
     def parse(self, v: str) -> Any:
-        if self.data_type in (Decimal, float):
-            return self.data_type(v.replace(',', '.'))
+        if self.data_type in (Decimal, float, int):
+            return self.data_type(locale.atof(v, self.data_type))
         return self.data_type(v)
 
     def clean(self) -> None:
@@ -111,6 +111,7 @@ class Parser:
         if not self.cfg.has_all_numbers and not has_headers:
             raise ValidationError("В конфигурации не указаны номера столбцов, в файле нет заголовков"
                                   " - невозможно сопоставить.")
+        _logger.info(f"Locale LC_NUMERIC: {locale.getlocale(locale.LC_NUMERIC)}")
         reader = csv.reader(in_file, delimiter=';')
         process_headers = has_headers
         result: List[RowData] = []

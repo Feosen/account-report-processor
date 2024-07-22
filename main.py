@@ -1,3 +1,4 @@
+import locale
 from decimal import Decimal
 from pathlib import Path
 from typing import List
@@ -43,6 +44,9 @@ report_cfgs: List[DstCfg] = [
     DstCfg('transfer', [D_DATE, D_VALUE, D_BONUS, D_SUM, D_CATEGORY_TRANS]),
     DstCfg('gain', [D_DATE, D_VALUE, D_BONUS, D_SUM, D_CATEGORY_GAIN]),
 ]
+
+#  Системная локаль
+locale.setlocale(locale.LC_ALL, "")
 
 
 def process_file(p: Path) -> None:
